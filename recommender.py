@@ -28,8 +28,10 @@ def get_similar(track_index, count, comparison_matrix, select_smallest):
     similar_songs_indexes = similar_songs_indexes[:count] if select_smallest else similar_songs_indexes[::-1][:count]
     return data.iloc[similar_songs_indexes].copy()
 
-def songs_as_dict(songs, include_fields):
-    return songs[include_fields].to_dict(orient='index')
+def recommendations_as_list(songs, include_fields):
+    songs = songs[include_fields]
+    songs['index'] = songs.index
+    return songs.to_dict(orient='records')
 
 def get_closest_n(track_index, count):
     if track_index >= count//2 and track_index < songs_count-count//2:
@@ -39,6 +41,8 @@ def get_closest_n(track_index, count):
     else:
         return data.tail(count+1).drop(track_index)
 
+def get_metadata(track_index):
+    return data.iloc[track_index][['track_name', 'track_artist', 'lyrics']].to_dict()
 
 # Getters for recommendation subsystems
 
@@ -63,45 +67,46 @@ def get_released_around_same_time(track_index, count):
 
 # Recommendation subsytems
 
-def recommend_by_same_artist(track_index, count, prioritisePopular):
+def recommend_by_same_artist(track_index, count, prioritisePopular, include_fields):
     songs_by_same_artist = get_by_same_artist(track_index, count*2)
-    songs_by_same_artist['recommendation_type'] = 'by same artist'
-    return sort_by_popularity(songs_by_same_artist, prioritisePopular)[:count]
+    songs_by_same_artist = sort_by_popularity(songs_by_same_artist, prioritisePopular)[:count]
+    return recommendations_as_list(songs_by_same_artist, include_fields)
 
-def recommend_lyrically_similar(track_index, count, prioritisePopular):
+def recommend_lyrically_similar(track_index, count, prioritisePopular, include_fields):
     similar_songs = get_lyrically_similar(track_index, count*2)
-    similar_songs['recommendation_type'] = 'lyrically similar'
-    return sort_by_popularity(similar_songs, prioritisePopular)[:count]
+    similar_songs = sort_by_popularity(similar_songs, prioritisePopular)[:count]
+    return recommendations_as_list(similar_songs, include_fields)
 
-def recommend_energy_similar(track_index, count, prioritisePopular):
+def recommend_energy_similar(track_index, count, prioritisePopular, include_fields):
     similar_songs = get_energy_similar(track_index, count*2)
-    similar_songs['recommendation_type'] = 'similar energy'
-    return sort_by_popularity(similar_songs, prioritisePopular)[:count]
+    similar_songs = sort_by_popularity(similar_songs, prioritisePopular)[:count]
+    return recommendations_as_list(similar_songs, include_fields)
 
-def recommend_mood_similar(track_index, count, prioritisePopular):
+def recommend_mood_similar(track_index, count, prioritisePopular, include_fields):
     similar_songs = get_mood_similar(track_index, count*2)
-    similar_songs['recommendation_type'] = 'similar mood'
-    return sort_by_popularity(similar_songs, prioritisePopular)[:count]
+    similar_songs = sort_by_popularity(similar_songs, prioritisePopular)[:count]
+    return recommendations_as_list(similar_songs, include_fields) 
 
-def recommend_released_around_same_time(track_index, count, prioritisePopular):
+def recommend_released_around_same_time(track_index, count, prioritisePopular, include_fields):
     contemporary_songs = get_released_around_same_time(track_index, count*2)
-    contemporary_songs['recommendation_type'] = 'released around same time'
-    return sort_by_popularity(contemporary_songs, prioritisePopular)[:count]
+    contemporary_songs = sort_by_popularity(contemporary_songs, prioritisePopular)[:count]
+    return recommendations_as_list(contemporary_songs, include_fields)
 
-def recommend_random(count, prioritisePopular):
+def recommend_random(count, prioritisePopular, include_fields):
     random_songs = get_random(count*2)
-    random_songs['recommendation_type'] = 'random'
-    return sort_by_popularity(random_songs, prioritisePopular)[:count]
+    random_songs = sort_by_popularity(random_songs, prioritisePopular)[:count]
+    return recommendations_as_list(random_songs, include_fields)
 
 
 # Hybrid recommendation system
 
 def hybrid_recommend(track_index, count=5, prioritisePopular=True):
-    by_same_artist = recommend_by_same_artist(track_index, count, prioritisePopular)
-    lyrically_similar = recommend_lyrically_similar(track_index, count, prioritisePopular)
-    energy_similar = recommend_energy_similar(track_index, count, prioritisePopular)
-    mood_similar = recommend_mood_similar(track_index, count, prioritisePopular)
-    random = recommend_random(count, prioritisePopular)
-    released_around_same_time = recommend_released_around_same_time(track_index, count, prioritisePopular)
-    all_recommendations = pd.concat([by_same_artist, lyrically_similar, energy_similar, mood_similar, random, released_around_same_time])
-    return songs_as_dict(all_recommendations, include_fields=['track_name', 'track_artist', 'recommendation_type'])
+    include_fields = ['track_name', 'track_artist']
+    all_recommendations = dict()
+    all_recommendations['by same artist'] = recommend_by_same_artist(track_index, count, prioritisePopular, include_fields)
+    all_recommendations['lyrically similar'] = recommend_lyrically_similar(track_index, count, prioritisePopular, include_fields)
+    all_recommendations['similar energy'] = recommend_energy_similar(track_index, count, prioritisePopular, include_fields)
+    all_recommendations['similar mood'] = recommend_mood_similar(track_index, count, prioritisePopular, include_fields)
+    all_recommendations['released around same time'] = recommend_released_around_same_time(track_index, count, prioritisePopular, include_fields)
+    all_recommendations['random'] = recommend_random(count, prioritisePopular, include_fields)
+    return all_recommendations
