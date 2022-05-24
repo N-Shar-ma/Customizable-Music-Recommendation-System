@@ -1,6 +1,6 @@
 [theme]
 primaryColor="indigo"
-backgroundColor="lightcoral"
-secondaryBackgroundColor="lightpink"
+backgroundColor="#f7bbbb"
+secondaryBackgroundColor="#ffe6e9"
 textColor="indigo"
 font="sans serif"
