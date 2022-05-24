@@ -1,6 +1,6 @@
 import streamlit as st
-from  urllib import parse
 from recommender import hybrid_recommend, get_metadata
+from youtubesearchpython import VideosSearch
 
 st.set_page_config(
     page_title='Customizable Music Recommendation System', 
@@ -20,24 +20,31 @@ if 'current_song_index' not in st.session_state:
 
 st.title('🎶 Customizable Music Recommendation System 🎶')
 
-st.sidebar.title('Options')
+st.sidebar.title('Choose:')
 
 option1 = 'Keep up with what\'s trending'
 option2 = 'Discover hidden gems'
-mode = st.sidebar.selectbox('Choose your mode of recommendations', (option1, option2))
+mode = st.sidebar.selectbox('Your mode of recommendations', (option1, option2))
 if(mode == option1):
     prioritisePopular = True
 else:
     prioritisePopular = False
 
-recommendations_count = st.sidebar.slider('Upto how many of each kind of recommendations would you like? (lesser means more accurate but more means more variety!)', min_value=1, max_value=10, value=3)
+recommendations_count = st.sidebar.slider('Upto how many of each kind of recommendations would you like (lesser means more accurate but more means more variety!)', min_value=1, max_value=10, value=3)
 
-st.sidebar.write('Choose which kinds of recommendations you would like')
+st.sidebar.write('Which kinds of recommendations you\'d like')
 
 current_song_metadata = get_metadata(st.session_state['current_song_index'])
 
-st.write('##', current_song_metadata['track_name'], ' - ', current_song_metadata['track_artist'])
-st.write('[Search on Google to listen](' + 'https://google.com/search?q=' + parse.quote(current_song_metadata['track_name'] + ' ' + current_song_metadata['track_artist']) + ')')
+st.write(f'## {current_song_metadata["track_name"]} - {current_song_metadata["track_artist"]}')
+
+youtube_search = VideosSearch(f'## {current_song_metadata["track_name"]} - {current_song_metadata["track_artist"]}', limit = 1)
+youtube_id = youtube_search.result()['result'][0]['id']
+image_url = youtube_search.result()['result'][0]['thumbnails'][0]['url']
+
+st.write(f'[![YouTube thumbnail]({image_url})](https://www.youtube.com/watch?v={youtube_id})')
+st.write(f'[Hear on YouTube](https://www.youtube.com/watch?v={youtube_id})')
+
 with st.expander('Show lyrics'):
     st.write(current_song_metadata['lyrics'])
 
@@ -48,8 +55,8 @@ for recommendation_type, songs in recommendations.items():
         continue
     if(len(songs) == 0):
         continue
-    st.write('####', recommendation_type.title())
+    st.write(f'#### {recommendation_type.title()}')
     with st.container():
         for song in songs:
-            st.write('- ', song['track_name'], ' - ', song['track_artist'])
+            st.write(f'- {song["track_name"]} - {song["track_artist"]}')
             st.button("listen", key=str(song['index'])+recommendation_type, on_click=change_song, args=(song['index'],))
