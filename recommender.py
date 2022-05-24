@@ -9,9 +9,9 @@ import numpy as np
 
 data = pickle.load(open('data.pkl', 'rb'))
 songs_count = data.shape[0]
-lyric_similarity_matrix = pickle.load(open('lyric_similarity_matrix.pkl', 'rb'))
-energy_difference_matrix = pickle.load(open('energy_difference_matrix.pkl', 'rb'))
-mood_difference_matrix = pickle.load(open('mood_difference_matrix.pkl', 'rb'))
+lyric_similarity_mapping = pickle.load(open('lyric_similarity_mapping.pkl', 'rb'))
+energy_similarity_mapping = pickle.load(open('energy_similarity_mapping.pkl', 'rb'))
+mood_similarity_mapping = pickle.load(open('mood_similarity_mapping.pkl', 'rb'))
 
 
 # Utility functions
@@ -50,13 +50,16 @@ def get_by_same_artist(track_index, count):
     return data[data['track_artist'] == data.iloc[track_index]['track_artist']].drop(track_index)[:count]
 
 def get_lyrically_similar(track_index, count):
-    return get_similar(track_index, count, lyric_similarity_matrix, False)
+    similar_songs_indexes = lyric_similarity_mapping[track_index][:count]
+    return data.iloc[similar_songs_indexes].copy()
 
 def get_energy_similar(track_index, count):
-    return get_similar(track_index, count, energy_difference_matrix, True)
+    similar_songs_indexes = energy_similarity_mapping[track_index][:count]
+    return data.iloc[similar_songs_indexes].copy()
 
 def get_mood_similar(track_index, count):
-    return get_similar(track_index, count, mood_difference_matrix, True)
+    similar_songs_indexes = mood_similarity_mapping[track_index][:count]
+    return data.iloc[similar_songs_indexes].copy()
 
 def get_random(count):
     return data.sample(count)
