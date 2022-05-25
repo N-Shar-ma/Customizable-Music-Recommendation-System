@@ -7,11 +7,11 @@ import numpy as np
 
 # Loading all the pickled data for making recommendations 
 
-data = pickle.load(open('data.pkl', 'rb'))
+data = pickle.load(open('pickles/data.pkl', 'rb'))
 songs_count = data.shape[0]
-lyric_similarity_mapping = pickle.load(open('lyric_similarity_mapping.pkl', 'rb'))
-energy_similarity_mapping = pickle.load(open('energy_similarity_mapping.pkl', 'rb'))
-mood_similarity_mapping = pickle.load(open('mood_similarity_mapping.pkl', 'rb'))
+lyric_similarity_mapping = pickle.load(open('pickles/lyric_similarity_mapping.pkl', 'rb'))
+energy_similarity_mapping = pickle.load(open('pickles/energy_similarity_mapping.pkl', 'rb'))
+mood_similarity_mapping = pickle.load(open('pickles/mood_similarity_mapping.pkl', 'rb'))
 
 
 # Utility functions

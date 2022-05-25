@@ -59,9 +59,9 @@ for i in range(songs_count):
 
 # pickling all data and similarity mappings needed for making recommendations
 
-pickle.dump(data, open('data.pkl', 'wb'))
-pickle.dump(lyric_similarity_mapping, open('lyric_similarity_mapping.pkl', 'wb'))
-pickle.dump(energy_similarity_mapping, open('energy_similarity_mapping.pkl', 'wb'))
-pickle.dump(mood_similarity_mapping, open('mood_similarity_mapping.pkl', 'wb'))
+pickle.dump(data, open('pickles/data.pkl', 'wb'))
+pickle.dump(lyric_similarity_mapping, open('pickles/lyric_similarity_mapping.pkl', 'wb'))
+pickle.dump(energy_similarity_mapping, open('pickles/energy_similarity_mapping.pkl', 'wb'))
+pickle.dump(mood_similarity_mapping, open('pickles/mood_similarity_mapping.pkl', 'wb'))
 
 print('preprocessing done')
