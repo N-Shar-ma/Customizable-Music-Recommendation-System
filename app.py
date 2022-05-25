@@ -2,23 +2,33 @@ import streamlit as st
 from recommender import hybrid_recommend, get_metadata
 from youtubesearchpython import VideosSearch
 
+dataset_url = 'https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs'
+
 st.set_page_config(
     page_title='Customizable Music Recommendation System', 
     page_icon='🎶',
     menu_items={
         'Get Help': None,
-        'Report a bug': "https://github.com/N-Shar-ma/Customizable-Music-Recommendation-System/issues",
-        'About': "### This project was made as part of Microsoft Engage'22!"
+        'Report a bug': 'https://github.com/N-Shar-ma/Customizable-Music-Recommendation-System/issues',
+        'About': f"### Project made as part of Microsoft Engage'22!\n#### Music Data sourced from [Kaggle]({dataset_url})"
     }
 )
+
+st.title('🎶 Customizable Music Recommendation System 🎶')
+
+
+
+# Persistent app state managment
 
 def change_song(index):
     st.session_state['current_song_index'] = index
 
 if 'current_song_index' not in st.session_state:
-    st.session_state['current_song_index'] = 1255
+    change_song(1255)
 
-st.title('🎶 Customizable Music Recommendation System 🎶')
+
+
+# Sidebar with customizing options
 
 st.sidebar.title('Choose:')
 
@@ -30,30 +40,41 @@ if(mode == option1):
 else:
     prioritisePopular = False
 
-recommendations_count = st.sidebar.slider('Upto how many of each kind of recommendations would you like (lesser means more accurate but more means more variety!)', min_value=1, max_value=10, value=3)
+recommendations_count = st.sidebar.slider('Upto how many of each kind of recommendations would you like '
+'(lesser means more accurate but more means more variety!)', min_value=1, max_value=10, value=3)
 
-st.sidebar.write('Which kinds of recommendations you\'d like')
+st.sidebar.write('Which kinds of recommendations you\'d like') # options added later below when adding songs
 
-current_song_metadata = get_metadata(st.session_state['current_song_index'])
 
-st.write(f'## {current_song_metadata["track_name"]} - {current_song_metadata["track_artist"]}')
 
-youtube_search = VideosSearch(f'## {current_song_metadata["track_name"]} - {current_song_metadata["track_artist"]}', limit = 1)
-youtube_id = youtube_search.result()['result'][0]['id']
-image_url = youtube_search.result()['result'][0]['thumbnails'][0]['url']
+# Main Content:
 
-st.write(f'[![YouTube thumbnail]({image_url})](https://www.youtube.com/watch?v={youtube_id})')
+
+# Showing current song
+
+current_song = get_metadata(st.session_state['current_song_index'])
+
+st.write(f'## {current_song["track_name"]} - {current_song["track_artist"]}')
+
+youtube_search = VideosSearch(f'## {current_song["track_name"]} - {current_song["track_artist"]}', limit = 1)
+youtube_id = youtube_search.result()['result'][0]['id'] # getting youtube link
+thumbnail_url = youtube_search.result()['result'][0]['thumbnails'][0]['url'] # getting youtube thumbnail
+
+st.write(f'[![YouTube thumbnail]({thumbnail_url})](https://www.youtube.com/watch?v={youtube_id})')
 st.write(f'[Hear on YouTube](https://www.youtube.com/watch?v={youtube_id})')
 
 with st.expander('Show lyrics'):
-    st.write(current_song_metadata['lyrics'])
+    st.write(current_song['lyrics'])
 
-recommendations = hybrid_recommend(st.session_state['current_song_index'], recommendations_count , prioritisePopular=prioritisePopular)
+
+# Retreiving and showing recommendations as per user's choices
+
+recommendations = hybrid_recommend(st.session_state['current_song_index'], recommendations_count, prioritisePopular=prioritisePopular)
 
 for recommendation_type, songs in recommendations.items():
     if not st.sidebar.checkbox(recommendation_type, value=True):
         continue
-    if(len(songs) == 0):
+    if(len(songs) == 0): # do not show a recommendation type if it has no songs
         continue
     st.write(f'#### {recommendation_type.title()}')
     with st.container():
