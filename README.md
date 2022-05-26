@@ -45,23 +45,35 @@ Python was used throughout along with the following modules:
 After cloning the repository and firing up a virtual environment, run the following commands:
 ```
 pip install -r requirements.txt    # installs dependencies
-streamlit run app.py    # runs the frontend locally in browser
+streamlit run app.py               # runs the frontend locally in browser
 ```
+For running tests, ensure you have pytest installed via pip, then simply run the command `pytest`
 
 ## Folder Organization
-    
-    ├── .streamlit
-    │   └── config.toml                   # Custom theming for frontend
-    ├── pickles                           # Data used to make recommendations 
+
+    ├── .github/workflows/test.yml          # CI pipeline to automatically test code
+    ├── .streamlit/config.toml              # Custom theming for frontend
+    ├── pickles                             # Data used to make recommendations 
     │   ├── data.pkl                     
     │   ├── energy_similarity_mapping.pkl 
     │   ├── lyric_similarity_mapping.pkl
     │   └── mood_similarity_mapping.pkl
-    ├── app.py                            # frontend using streamlit
-    ├── preprocessing.py                  # cleans data and generates pickles
-    ├── recommender.py                    # code for core recommendation system
-    ├── recommender.ipynb                 # initial testing of system
+    ├── .gitignore 
+    ├── app.py                              # frontend using streamlit
+    ├── preprocessing.py                    # cleans data and generates pickles
+    ├── recommender.py                      # code for core recommendation system
+    ├── recommender.ipynb                   # initial testing of system
     ├── requirements.txt 
-    └── spotify_songs.csv                 # raw sourced data
+    ├── spotify_songs.csv                   # raw sourced data
+    └── test_recommender.py                 # tests for recommender using pytest
 
 The 3 main files of interest (with relevant code) are `preprocessing.py`, `app.py` and `recommender.py`
+
+Sidenote: One may think that the pickle files should have been gitignored, as running `preprocessing.py` would generate them anyway, but they had to be pushed since the deployment is from this repository, so they need to be present here. The jupyter notebook too is not needed for the code to work at any stage, however it is included here to show and document the progress of this project - I worked solely on the notebook initially, and only later broke it into 2 files when I had a clearer idea of where this project was headed.
+
+## Testing and CI
+
+The core functionality of the recommender is tested using `pytest` and the tests are in the `test_recommender.py` file. Using GitHub Actions a workflow (`.github/workflows/test.yml`) has been set up that runs these tests everytime code is pushed or a pull request is made to the repository.
+
+## CD
+The streamlit frontend is hosted at https://share.streamlit.io/n-shar-ma/customizable-music-recommendation-system/app.py, where anytime changes are pushed to the master branch, the site is redeployed.

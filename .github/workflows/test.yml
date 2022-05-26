@@ -1,10 +1,16 @@
-name: CI CD
+name: Run and verify tests pass
 
 on:
   push:
     branches: [ master ]
+    paths:
+    - recommender.py
+    - test_recommender.py
   pull_request:
     branches: [ master ]
+    paths:
+    - recommender.py
+    - test_recommender.py
 
 jobs:
   build:
