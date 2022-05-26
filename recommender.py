@@ -29,7 +29,7 @@ def get_similar(track_index, count, comparison_matrix, select_smallest):
     return data.iloc[similar_songs_indexes].copy()
 
 def recommendations_as_list(songs, include_fields):
-    songs = songs[include_fields]
+    songs = songs[include_fields].copy()
     songs['index'] = songs.index
     return songs.to_dict(orient='records')
 
