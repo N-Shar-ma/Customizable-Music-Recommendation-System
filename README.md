@@ -15,7 +15,7 @@ This web app is the prototype for a music recommendation system unlike any other
   - released around the same time
   - random
 - User can choose to see any, all, or none of the aforementioned recommendation types
-- User can set the number of recommendations of each chosen type between the range of 1 to 10
+- User can set the number of recommendations of each chosen type in the range of 1 to 10
 ### UX related features
 - Ability to show or hide the lyrics for each song
 - Youtube video linked for each song
@@ -23,14 +23,15 @@ This web app is the prototype for a music recommendation system unlike any other
 - Ability to switch the width of the main content area
 - Ability to choose between a custom (pastel), light and dark theme.
 - Handy hamburger menu with options to report a bug, share the web app, view source code, read about it, see credits, etc
+- Cross Platform & Responsive - The site works and looks pretty on any device it is viewed on, irrespective of screen shape and size
 
 ## Use Case Examples:
-- Suppose user A has been out of the loop and wants to get up to speed with the most popular music. They can use the (default) "keep up with what's trending mode". If another user B already knows most of the popular songs and would rather listen to lesser known tracks, the "discover hidden gems" mode is for them. These modes are clearly differentiated based on the songs' popularity.
-- If user C doesn't care much about the lyrics to a song but only their overall energy and mood, they can turn off the "lyrically similar" recommendations, while if user D treats songs like poetry and primarily focuses on just the lyrics, they can do the opposite.
+- Suppose User A has been out of the loop and wants to get up to speed with the most popular music. They can use the (default) "keep up with what's trending mode". If another User B already knows most of the popular songs and would rather listen to lesser known tracks, the "discover hidden gems" mode is for them. These modes are clearly differentiated based on the songs' popularity.
+- If User C doesn't care much about the lyrics of a song but only their overall energy and mood, they can turn off the "lyrically similar" recommendations, while if User D treats songs like poetry and primarily focuses on just the lyrics, they can do the opposite.
 - User E is interested in songs of a particular era, so they can turn on just the "released around the same time" recommendations" to explore contemporary songs
 - User F has just discovered their new favourite artist and wants to explore their discography, be it their popular hits or underrated songs, so they can turn on the "by same artist" recommendations alone.
 - User G knows that they get easily distracted when faced with too many choices of recommendations to choose from, so they can reduce the number of recommendations shown down to 1, while if User H likes variety they can turn up the number of recommendations of each type to up to 10!
-- User H is feeling adventurous and would like to stumble upon music without any relation to their usual taste. The random recommendations are perfect for them!
+- User I is feeling adventurous and would like to stumble upon music without any relation to their usual taste. The random recommendations are perfect for them!
 
 ## Technologies Used
 
