@@ -1,6 +1,6 @@
 # 🎶 Customizable Music Recommendation System 🎶
 
-This web app is the prototype for a music recommendation system unlike any other. Most traditional systems are not very transparent about why a recommendation is made, and seem like magical black boxes. What sets apart this customizable music recommendation system from the rest, is that it aims to clearly convey the reason behind each recommendation, and put all the control in the hands of the user so that they can pick and choose what kind of recommendations they'd like, and hence personalize the system just as they want.
+This web app is a prototype for a music recommendation system unlike any other. Most traditional systems are not very transparent about why a recommendation is made, and seem like magical black boxes. What sets apart this customizable music recommendation system from the rest, is that it aims to clearly convey the reason behind each recommendation, and put all the control in the hands of the user so that they can pick and choose what kind of recommendations they'd like, and hence personalize the system just as they want.
 
 ## Features
 ### Core features
@@ -19,7 +19,7 @@ This web app is the prototype for a music recommendation system unlike any other
 ### UX related features
 - Ability to show or hide the lyrics for each song
 - Youtube video linked for each song
-- Each recommended song can be viewed via a listen button, where this song's recommendations can then be seen and so on
+- Viewing a recommended song by clicking on the listen button, will then lead to recommendations based on that song
 - Ability to switch the width of the main content area
 - Ability to choose between a custom (pastel), light and dark theme.
 - Handy hamburger menu with options to report a bug, share the web app, view source code, read about it, see credits, etc
@@ -77,4 +77,4 @@ Sidenote: One may think that the pickle files should have been gitignored, as ru
 The core functionality of the recommender is tested using `pytest` and the tests are in the `test_recommender.py` file. Using GitHub Actions a workflow (`.github/workflows/test.yml`) has been set up that runs these tests everytime code is pushed or a pull request is made to the repository.
 
 ## CD
-The streamlit frontend is hosted at https://share.streamlit.io/n-shar-ma/customizable-music-recommendation-system/app.py, where anytime changes are pushed to the master branch, the site is redeployed.
+The streamlit frontend is hosted at https://share.streamlit.io/n-shar-ma/customizable-music-recommendation-system/app.py, where anytime changes are pushed to the master branch, the site is updated.
