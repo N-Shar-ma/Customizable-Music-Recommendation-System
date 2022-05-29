@@ -78,3 +78,15 @@ The core functionality of the recommender is tested using `pytest` and the tests
 
 ## CD
 The streamlit frontend is hosted at https://share.streamlit.io/n-shar-ma/customizable-music-recommendation-system/app.py, where anytime changes are pushed to the master branch, the site is updated.
+
+## Development Process
+
+Being completely new to ML, I spent the 1st 5 days simply doing research on the internet. I scoured through several technical blogs, lots of library specific documentation, browsed through GitHub repositories, and made a lot of Google Searches to understand how traditional recommendation systems actually work. Once I understood common jargon like content based, collaborative based and hybrid recommendation systems, and ML terms like cosing similarity and euclidean distance, I started forming opinions on what kind of system I'd like to build and what features would make it stand out and appeal to a large userbase... The answer I came up with was: customizability!
+
+In the same 5 days, after lots of fruitless search for a suitable dataset, I finally narrowed down on [this one from Kaggle](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
+
+The next 3 days were spent exploring, experimenting with and visualising the data in a Jupyter Notebook, writing the code for several types and modes of recommendations (both the search and sort algorithms for the system), and then also tieing them together as a hybrid system. Once I had these basics set up and functional, I spent my 4th day of coding in splitting all this Jupyter Notebook code into 2 appropriate `.py` files, where the first processed and pickled necessary data which the second used to give recommendations.
+
+Over the next 3 days, I worked on the streamlit frontend, initially focusing on displaying all the recommendations appropriately, then on increasing customizability, and finally on cosmetic features like adding YouTube thumbnails and links for each song, making a custom pastel theme, adding credits for the dataset used in the about section, and so on. During this time I also set up the CD pipeline, for which I'd need my pickle files to be stored in the repository as well, but then I realised that they were way too large for that. I was indeed in a pickle 😅. Before long though, it struck me that I was pickling much more data than necessary, so I tweaked the code to make it much more space efficient and fast. In the end, this roadblock was crossed and helped me improve my code's performance as well!
+
+The last 3 days were spent in researching how testing in Python works (I'm already familiar with it in JavaScript), implementing it in my project, automating it through GitHub Actions, and in documenting everything in this README. I habitually comment my code as I write it and clean it at regular intervals, so I didn't have to take out time specially for that. On my mentor's advice I also created a power point [presentation](https://docs.google.com/presentation/d/1yXCtetw0YwBJQNKG5RkCuCG6ZSvpV31Zhqp854nvV28/edit?usp=sharing) for the [video demo](https://www.youtube.com/watch?v=adggmFChcag)
